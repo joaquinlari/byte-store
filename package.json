@@ -1,5 +1,5 @@
 {
-  "name": "xiaomi-store",
+  "name": "byte-store",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,19 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joaquinlari/xiaomi-store.git"
+    "url": "git+https://github.com/joaquinlari/byte-store.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joaquinlari/xiaomi-store/issues"
+    "url": "https://github.com/joaquinlari/byte-store/issues"
   },
-  "homepage": "https://github.com/joaquinlari/xiaomi-store#readme",
+  "homepage": "https://github.com/joaquinlari/byte-store#readme",
   "dependencies": {
-    "@types/mongodb": "^4.0.6",
     "express": "^5.2.1",
-    "mongodb": "^7.3.0",
     "pg": "^8.21.0"
   },
   "devDependencies": {

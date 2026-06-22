@@ -1,1 +1,1 @@
-# xiaomi-store
+# byte-store

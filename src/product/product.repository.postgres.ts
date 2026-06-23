@@ -37,4 +37,12 @@ export class ProductRepositoryPostgres implements ProductRepositoryInterface {
         return result.rows[0];
     }
 
+    public async deleteById(id: number): Promise<Product | null> {
+        const result = await pool.query<Product>(
+            'DELETE FROM products WHERE id = $1 RETURNING *',
+            [id]
+        );
+        return result.rows[0] ?? null;
+    }
+
 }

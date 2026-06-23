@@ -50,4 +50,29 @@ export class ProductController {
         }
     };
 
+    //Este endpoint debe estar protegido por middleware de autenticación JWT + verificación de rol ADMIN.
+    // CUALQUIERA puede eliminar productos. Pendiente hasta que exista el módulo de autenticación.
+    public delete = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const id = Number(req.params.id);
+
+            if (isNaN(id)) {
+                res.status(400).json({ message: 'El id debe ser un número' });
+                return;
+            }
+
+            const deletedProduct = await this.productService.delete(id);
+
+            if (!deletedProduct) {
+                res.status(404).json({ message: `No existe un producto con id ${id}` });
+                return;
+            }
+
+            res.status(200).json({ message: 'Producto eliminado correctamente', product: deletedProduct });
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+            res.status(500).json({ message: 'Error interno al eliminar producto' });
+        }
+    };
+
 }

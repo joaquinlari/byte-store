@@ -14,4 +14,6 @@ export interface ProductRepositoryInterface {
         image_url: string | null;
     }): Promise<Product>;
 
+    deleteById(id: number): Promise<Product | null>;
+
 }

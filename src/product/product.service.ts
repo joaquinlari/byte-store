@@ -31,4 +31,8 @@ export class ProductService {
         return this.productRepository.insert(data);
     }
 
+    public async delete(id: number): Promise<Product | null> {
+        return this.productRepository.deleteById(id);
+    }
+
 }

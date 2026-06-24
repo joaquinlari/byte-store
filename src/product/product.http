@@ -1,0 +1,49 @@
+### Listar catálogo completo de productos (acceso público)
+GET http://localhost:3000/products
+Content-Type: application/json
+
+### Crear producto nuevo
+### (Hoy SIN protección - pendiente middleware JWT + rol ADMIN)
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "category_id": null,
+    "brand": "Xiaomi",
+    "model": "Redmi Note 18",
+    "description": "Smartphone gama media, 512GB",
+    "price": 800000,
+    "stock": 25,
+    "image_url": "https://ejemplo.com/redmi-note-18.jpg"
+}
+
+### Caso de error: falta un campo obligatorio (debería devolver 400)
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "brand": "Xiaomi",
+    "description": "Falta model, price y stock"
+}
+
+### Caso de error: precio negativo (debería devolver 400)
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "brand": "Xiaomi",
+    "model": "Redmi 14",
+    "description": "Precio inválido a propósito",
+    "price": -100,
+    "stock": 10,
+    "image_url": null
+}
+
+### Eliminar producto por id (reemplazá el 1 por un id real)
+### (Hoy SIN protección - pendiente middleware JWT + rol ADMIN)
+DELETE http://localhost:3000/products/4
+Content-Type: application/json
+
+### Caso de error: eliminar un id que no existe (debería devolver 404)
+DELETE http://localhost:3000/products/99999
+Content-Type: application/json

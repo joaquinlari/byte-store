@@ -29,7 +29,10 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: string, userData: Partial<User>): Promise<User | null> {
+  async updateUser(
+    id: string,
+    userData: Partial<Omit<User, "id" | "create_time">>,
+  ): Promise<User | null> {
     return this.userRepository.updateUser(id, userData);
   }
 
@@ -43,13 +46,9 @@ export class UserService {
     return deleted;
   }
 
-  private validateUserData(userData: User): void {
-    if (!userData.username || userData.username.trim().length < 3) {
+  private validateUserData(userData: Omit<User, "id" | "create_time">): void {
+    if (!userData.name || userData.name.trim().length < 3) {
       throw new Error("El nombre de usuario debe tener al menos 3 caracteres.");
-    }
-
-    if (!userData.name || userData.name.trim().length === 0) {
-      throw new Error("El nombre es requerido.");
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -9,11 +9,11 @@
 -- =========================================================
 CREATE TABLE IF NOT EXISTS users (
     id              SERIAL PRIMARY KEY,
-    full_name       VARCHAR(150) NOT NULL,
+    name       VARCHAR(150) NOT NULL,
     email           VARCHAR(150) NOT NULL UNIQUE,
     password_hash   VARCHAR(255) NOT NULL,
-    role            VARCHAR(20)  NOT NULL DEFAULT 'CLIENTE'
-                        CHECK (role IN ('CLIENTE', 'ADMIN')),
+    role            VARCHAR(20)  NOT NULL DEFAULT 'user'
+                        CHECK (role IN ('user', 'admin')),
     created_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 

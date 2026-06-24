@@ -14,7 +14,7 @@ export class UserController {
       res.json(users);
     } catch (error) {
       console.error("Error fetching users:", error);
-      res.status(500).json({ error: " Internal Server Error" });
+      res.status(500).json({ message: " Error interno del servidor" });
     }
   }
 
@@ -24,7 +24,7 @@ export class UserController {
   ): Promise<void> {
     const id = req.params.id;
     if (!id || id.trim().length === 0) {
-      res.status(400).json({ error: "Invalid user ID" });
+      res.status(400).json({ message: "No es valido el ID de usuario" });
       return;
     }
 
@@ -34,26 +34,25 @@ export class UserController {
       if (user) {
         res.json(user);
       } else {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ message: "Usuario no encontrado" });
       }
     } catch (error: any) {
       console.error("Error fetching user:", error);
-      res.status(400).json({ error: error.message });
+      res.status(400).json({ message: error.message });
     }
   }
 
   public async createUser(req: Request, res: Response): Promise<void> {
     try {
-      const { username, name, email, password } = req.body;
+      const { name, email, password } = req.body;
 
-      if (!username || !name || !email || !password) {
+      if (!name || !email || !password) {
         res.status(400).json({ message: "Faltan campos obligatorios" });
         return;
       }
 
       // Obligamos a que sea 'user'
       const userData = {
-        username,
         name,
         email,
         password,
@@ -63,13 +62,14 @@ export class UserController {
       const newUser = await this.userService.createUser(userData);
       res.status(201).json(newUser);
     } catch (error) {
+      console.error(" Error en createUser:", error);
       res.status(500).json({ message: "Error al crear usuario" });
     }
   }
 
   async createAdmin(req: Request, res: Response): Promise<void> {
     try {
-      const { username, name, email, password, secretKey } = req.body;
+      const { name, email, password, secretKey } = req.body;
 
       // La validación de tu clave secreta
       if (secretKey !== "super_secreto_utn_2026") {
@@ -79,14 +79,13 @@ export class UserController {
         return;
       }
 
-      if (!username || !name || !email || !password) {
+      if (!name || !email || !password) {
         res.status(400).json({ message: "Faltan campos obligatorios" });
         return;
       }
 
       // Asignamos el rol de 'admin'
       const userData = {
-        username,
         name,
         email,
         password,
@@ -96,11 +95,15 @@ export class UserController {
       const newUser = await this.userService.createUser(userData);
       res.status(201).json(newUser);
     } catch (error) {
+      console.error("❌ Error en createAdmin:", error);
       res.status(500).json({ message: "Error al crear administrador" });
     }
   }
 
-  public async updateUser(req: Request, res: Response): Promise<void> {
+  public async updateUser(
+    req: Request<{ id: string }>,
+    res: Response,
+  ): Promise<void> {
     const id = req.params.id as string;
     if (!id || id.trim().length === 0) {
       res.status(400).json({ message: "ID inválido" });
@@ -112,11 +115,11 @@ export class UserController {
       if (user) {
         res.json(user);
       } else {
-        res.status(404).json({ error: "user not found" });
+        res.status(404).json({ message: "Usuario no encontrado" });
       }
     } catch (error: any) {
       console.error("Error updating user ", error);
-      res.status(400).json({ error: error.message });
+      res.status(400).json({ message: error.message });
     }
   }
 
@@ -127,7 +130,7 @@ export class UserController {
     const id = req.params.id;
 
     if (!id || id.trim().length === 0) {
-      res.status(400).json({ error: "invalid user ID" });
+      res.status(400).json({ error: "No es valido el ID del usuario" });
       return;
     }
 
@@ -135,13 +138,13 @@ export class UserController {
       const deleted = await this.userService.deleteUser(id);
 
       if (deleted) {
-        res.status(204).send();
+        res.status(200).json({ message: "Usuario eliminado correctamente" });
       } else {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ error: "Usuario no encontrado" });
       }
     } catch (error: any) {
       console.error("Error deleting User:", error);
-      res.status(400).json({ error: error.message });
+      res.status(400).json({ message: error.message });
     }
   }
 }

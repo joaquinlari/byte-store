@@ -41,7 +41,7 @@ export class PostgresCartRepository implements ICartRepository {
   }
 
   async setQuantity(userId: number, productId:number, quantity:number): Promise<CartItem |  null>{
-    const {rows} = await this.pool.query(`UPDATE cart_items SET quantity $3
+    const {rows} = await this.pool.query(`UPDATE cart_items SET quantity = $3
         WHERE user_id = $1 AND product_id = $2
         RETURNING *`, [userId, productId, quantity])
     return rows.length ? this.toEntity(rows[0]) : null

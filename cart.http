@@ -1,0 +1,103 @@
+### ByteStore — Cart API (REST Client)
+### Extension: humao.rest-client. Click "Send Request" arriba de cada bloque.
+### Requiere: server corriendo (npm run dev) + DB con users y products existentes.
+
+@host = http://localhost:3000
+@userId = 1
+@productId = 5
+
+###############################################################
+# SETUP (opcional) — necesitás un user y un product que existan
+###############################################################
+
+### Listar products (mirá qué productId existe)
+GET {{host}}/products
+
+### Crear un product de prueba (anotá el id que devuelve -> @productId)
+POST {{host}}/products
+Content-Type: application/json
+
+{
+  "category_id": null,
+  "brand": "Xiaomi",
+  "model": "Redmi Note 13",
+  "description": "test",
+  "price": 299,
+  "stock": 50,
+  "image_url": null
+}
+
+###############################################################
+# CART — happy path
+###############################################################
+
+### 1) Ver carrito (vacío = items: []). Nunca 404
+GET {{host}}/api/carts/{{userId}}
+
+### 2) Agregar item (201). Producto repetido -> SUMA cantidad
+POST {{host}}/api/carts/{{userId}}/items
+Content-Type: application/json
+
+{
+  "productId": {{productId}},
+  "quantity": 2
+}
+
+### 3) Agregar el mismo otra vez -> quantity pasa a 4 (2+2)
+POST {{host}}/api/carts/{{userId}}/items
+Content-Type: application/json
+
+{
+  "productId": {{productId}},
+  "quantity": 2
+}
+
+### 4) Fijar cantidad exacta (PATCH) -> quantity = 7
+PATCH {{host}}/api/carts/{{userId}}/items/{{productId}}
+Content-Type: application/json
+
+{
+  "quantity": 7
+}
+
+### 5) Quitar un item
+DELETE {{host}}/api/carts/{{userId}}/items/{{productId}}
+
+### 6) Vaciar carrito entero
+DELETE {{host}}/api/carts/{{userId}}/items
+
+###############################################################
+# CART — casos de error
+###############################################################
+
+### quantity < 1 -> 400
+POST {{host}}/api/carts/{{userId}}/items
+Content-Type: application/json
+
+{
+  "productId": {{productId}},
+  "quantity": 0
+}
+
+### productId inexistente -> 404 (FK violation 23503)
+POST {{host}}/api/carts/{{userId}}/items
+Content-Type: application/json
+
+{
+  "productId": 999999,
+  "quantity": 1
+}
+
+### PATCH item que no está en el carrito -> 404
+PATCH {{host}}/api/carts/{{userId}}/items/999999
+Content-Type: application/json
+
+{
+  "quantity": 3
+}
+
+### DELETE item que no está -> 404
+DELETE {{host}}/api/carts/{{userId}}/items/999999
+
+### userId inválido (no entero >= 1) -> 400
+GET {{host}}/api/carts/abc

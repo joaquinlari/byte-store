@@ -1,14 +1,17 @@
 import express, { Application } from 'express';
+import { Pool } from 'pg';
 import { config } from './config';
 import productRoutes from './product/product.routes';
+import { buildCartRouter } from './cart/cart.routes';
 
 export class App {
     public readonly app: Application;
 
-    constructor() {
+    constructor(pool: Pool) {
         this.app = express();
         this.app.use(express.json());
         this.app.use('/products', productRoutes);
+        this.app.use('/api/carts', buildCartRouter(pool));
     }
 
     public start() {

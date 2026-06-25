@@ -9,18 +9,16 @@ export class PostgresUserRepository implements UserRepository {
     this.client = client;
   }
 
-  // Traduce los datos de la BD al formato de tu Entidad TypeScript
   private toUser(row: any): User {
     return {
       id: Number(row.id),
-      name: row.name, // Mapea full_name de la BD a 'name' de tu negocio
+      name: row.name,
       email: row.email,
-      role: row.role === "admin" ? "admin" : "user", // Ahora TS sabe con certeza que esto es "user" | "admin"
+      role: row.role === "admin" ? "admin" : "user",
     };
   }
 
   async findAll(): Promise<User[]> {
-    // Usamos ALIAS (AS) para mantener la compatibilidad con tu código externo
     const result = await this.client.query(
       "SELECT id, name , email, role FROM users",
     );
@@ -47,15 +45,9 @@ export class PostgresUserRepository implements UserRepository {
       RETURNING id, name, email, role
     `;
 
-    // Mapeamos el rol de TS ('user'/'admin') al formato CHECK de Postgres ('CLIENTE'/'ADMIN')
     const dbRole = user.role === "admin" ? "admin" : "user";
 
-    const values = [
-      user.name,
-      user.email,
-      user.password, // El servicio envía 'password'
-      dbRole,
-    ];
+    const values = [user.name, user.email, user.password, dbRole];
 
     const result = await this.client.query(query, values);
     return this.toUser(result.rows[0]);
@@ -69,7 +61,6 @@ export class PostgresUserRepository implements UserRepository {
     const values: any[] = [];
     let paramCount = 1;
 
-    // Diccionario de traducción de propiedades TS -> Columnas SQL
     const fieldMapping: Record<string, string> = {
       name: "name",
       email: "email",
@@ -81,7 +72,6 @@ export class PostgresUserRepository implements UserRepository {
       if (value !== undefined && fieldMapping[key]) {
         fields.push(`${fieldMapping[key]} = $${paramCount}`);
 
-        // Traducción especial de valores para el campo de Rol
         if (key === "role") {
           values.push(value === "admin" ? "admin" : "user");
         } else {

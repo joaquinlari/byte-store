@@ -45,4 +45,43 @@ export class ProductRepositoryPostgres implements ProductRepositoryInterface {
         return result.rows[0] ?? null;
     }
 
+public async updateById(id: number, data: Partial<{
+        category_id: number | null;
+        brand: string;
+        model: string;
+        description: string | null;
+        price: number;
+        stock: number;
+        image_url: string | null;
+    }>): Promise<Product | null> {
+        const fields: string[] = [];
+        const values: unknown[] = [];
+        let paramIndex = 1;
+
+        for (const [key, value] of Object.entries(data)) {
+            if (value !== undefined) {
+                fields.push(`${key} = $${paramIndex}`);
+                values.push(value);
+                paramIndex++;
+            }
+        }
+
+        if (fields.length === 0) {
+            const result = await pool.query<Product>(
+                'SELECT * FROM products WHERE id = $1',
+                [id]
+            );
+            return result.rows[0] ?? null;
+        }
+
+        fields.push(`updated_at = NOW()`);
+        values.push(id);
+
+        const result = await pool.query<Product>(
+            `UPDATE products SET ${fields.join(', ')} WHERE id = $${paramIndex} RETURNING *`,
+            values
+        );
+        return result.rows[0] ?? null;
+    }
+    
 }

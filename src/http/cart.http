@@ -1,24 +1,12 @@
 @host = http://localhost:3000
 @userId = 1
-@productId = 5
+# usar id de un producto que exista
+@productId = 2
 
-GET {{host}}/products
-
-POST {{host}}/products
-Content-Type: application/json
-
-{
-  "category_id": null,
-  "brand": "Xiaomi",
-  "model": "Redmi Note 13",
-  "description": "test",
-  "price": 299,
-  "stock": 50,
-  "image_url": null
-}
-
+### Ver carrito del usuario
 GET {{host}}/carts/{{userId}}
 
+### Agregar producto al carrito
 POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 
@@ -27,14 +15,7 @@ Content-Type: application/json
   "quantity": 2
 }
 
-POST {{host}}/carts/{{userId}}/items
-Content-Type: application/json
-
-{
-  "productId": {{productId}},
-  "quantity": 2
-}
-
+### Cambiar cantidad del item
 PATCH {{host}}/carts/{{userId}}/items/{{productId}}
 Content-Type: application/json
 
@@ -42,10 +23,13 @@ Content-Type: application/json
   "quantity": 7
 }
 
+### Quitar item del carrito
 DELETE {{host}}/carts/{{userId}}/items/{{productId}}
 
+### Vaciar carrito completo
 DELETE {{host}}/carts/{{userId}}/items
 
+### Error: cantidad cero (400)
 POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 
@@ -54,6 +38,7 @@ Content-Type: application/json
   "quantity": 0
 }
 
+### Error: producto inexistente (404)
 POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 
@@ -62,6 +47,7 @@ Content-Type: application/json
   "quantity": 1
 }
 
+### Error: item no está (404)
 PATCH {{host}}/carts/{{userId}}/items/999999
 Content-Type: application/json
 
@@ -69,6 +55,8 @@ Content-Type: application/json
   "quantity": 3
 }
 
+### Error: borrar item inexistente
 DELETE {{host}}/carts/{{userId}}/items/999999
 
+### Error: userId inválido (400)
 GET {{host}}/carts/abc

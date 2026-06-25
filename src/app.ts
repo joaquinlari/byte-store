@@ -3,6 +3,7 @@ import { Pool } from "pg";
 import { config } from "./config";
 import productRoutes from "./product/product.routes";
 import userRoutes from "./users/users.routes";
+import { buildCartRouter } from "./cart/cart.routes";
 
 export class App {
   public readonly app: Application;
@@ -12,6 +13,7 @@ export class App {
     this.app.use(express.json());
     this.app.use("/products", productRoutes);
     this.app.use("/users", userRoutes);
+    this.app.use("/api/carts", buildCartRouter(pool));
   }
 
   public start() {

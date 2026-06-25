@@ -39,7 +39,40 @@ Content-Type: application/json
     "image_url": null
 }
 
-### Eliminar producto por id (reemplazá el 1 por un id real)
+### Actualizar producto 
+### (Hoy SIN protección - pendiente middleware JWT + rol ADMIN)
+PUT http://localhost:3000/products/2
+Content-Type: application/json
+
+{
+    "price": 750000,
+    "stock": 30
+}
+
+### Caso de error: no se manda ningún campo (debería devolver 400)
+PUT http://localhost:3000/products/1
+Content-Type: application/json
+
+{
+}
+
+### Caso de error: precio negativo (debería devolver 400)
+PUT http://localhost:3000/products/1
+Content-Type: application/json
+
+{
+    "price": -50
+}
+
+### Caso de error: actualizar un id que no existe (debería devolver 404)
+PUT http://localhost:3000/products/99999
+Content-Type: application/json
+
+{
+    "stock": 5
+}
+
+### Eliminar producto por id 
 ### (Hoy SIN protección - pendiente middleware JWT + rol ADMIN)
 DELETE http://localhost:3000/products/4
 Content-Type: application/json

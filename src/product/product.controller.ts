@@ -75,4 +75,52 @@ export class ProductController {
         }
     };
 
+    //Este endpoint debe estar protegido por middleware de autenticación JWT + verificación de rol ADMIN.
+    // CUALQUIERA puede actualizar productos. Pendiente hasta que exista el módulo de autenticación.
+    public update = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const id = Number(req.params.id);
+
+            if (isNaN(id)) {
+                res.status(400).json({ message: 'El id debe ser un número' });
+                return;
+            }
+
+            const { category_id, brand, model, description, price, stock, image_url } = req.body;
+
+            if (
+                category_id === undefined &&
+                brand === undefined &&
+                model === undefined &&
+                description === undefined &&
+                price === undefined &&
+                stock === undefined &&
+                image_url === undefined
+            ) {
+                res.status(400).json({ message: 'Debés enviar al menos un campo para actualizar' });
+                return;
+            }
+
+            const updatedProduct = await this.productService.update(id, {
+                category_id,
+                brand,
+                model,
+                description,
+                price,
+                stock,
+                image_url,
+            });
+
+            if (!updatedProduct) {
+                res.status(404).json({ message: `No existe un producto con id ${id}` });
+                return;
+            }
+
+            res.status(200).json(updatedProduct);
+        } catch (error) {
+            console.error('Error al actualizar producto:', error);
+            const message = error instanceof Error ? error.message : 'Error interno al actualizar producto';
+            res.status(400).json({ message });
+        }
+    };
 }

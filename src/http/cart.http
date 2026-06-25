@@ -1,21 +1,12 @@
 @host = http://localhost:3000
 @userId = 1
 # usar id de un producto que exista
-@productId = 5
+@productId = 2
 
 ### Ver carrito del usuario
 GET {{host}}/carts/{{userId}}
 
 ### Agregar producto al carrito
-POST {{host}}/carts/{{userId}}/items
-Content-Type: application/json
-
-{
-  "productId": {{productId}},
-  "quantity": 2
-}
-
-### Re-agregar: suma la cantidad
 POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 

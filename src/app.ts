@@ -13,7 +13,7 @@ export class App {
     this.app.use(express.json());
     this.app.use("/products", productRoutes);
     this.app.use("/users", userRoutes);
-    this.app.use("/api/carts", buildCartRouter(pool));
+    this.app.use("/carts", buildCartRouter(pool));
   }
 
   public start() {

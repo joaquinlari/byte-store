@@ -17,9 +17,9 @@ Content-Type: application/json
   "image_url": null
 }
 
-GET {{host}}/api/carts/{{userId}}
+GET {{host}}/carts/{{userId}}
 
-POST {{host}}/api/carts/{{userId}}/items
+POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 
 {
@@ -27,7 +27,7 @@ Content-Type: application/json
   "quantity": 2
 }
 
-POST {{host}}/api/carts/{{userId}}/items
+POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 
 {
@@ -35,18 +35,18 @@ Content-Type: application/json
   "quantity": 2
 }
 
-PATCH {{host}}/api/carts/{{userId}}/items/{{productId}}
+PATCH {{host}}/carts/{{userId}}/items/{{productId}}
 Content-Type: application/json
 
 {
   "quantity": 7
 }
 
-DELETE {{host}}/api/carts/{{userId}}/items/{{productId}}
+DELETE {{host}}/carts/{{userId}}/items/{{productId}}
 
-DELETE {{host}}/api/carts/{{userId}}/items
+DELETE {{host}}/carts/{{userId}}/items
 
-POST {{host}}/api/carts/{{userId}}/items
+POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 
 {
@@ -54,7 +54,7 @@ Content-Type: application/json
   "quantity": 0
 }
 
-POST {{host}}/api/carts/{{userId}}/items
+POST {{host}}/carts/{{userId}}/items
 Content-Type: application/json
 
 {
@@ -62,13 +62,13 @@ Content-Type: application/json
   "quantity": 1
 }
 
-PATCH {{host}}/api/carts/{{userId}}/items/999999
+PATCH {{host}}/carts/{{userId}}/items/999999
 Content-Type: application/json
 
 {
   "quantity": 3
 }
 
-DELETE {{host}}/api/carts/{{userId}}/items/999999
+DELETE {{host}}/carts/{{userId}}/items/999999
 
-GET {{host}}/api/carts/abc
+GET {{host}}/carts/abc

@@ -48,21 +48,20 @@ export class UserService {
           "El nombre de usuario debe tener al menos 3 caracteres.",
         );
       }
-
-      // 2. Validar Email
-      if (!isUpdate || userData.email !== undefined) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!userData.email || !emailRegex.test(userData.email)) {
-          throw new Error("El formato del correo electrónico no es válido.");
-        }
+    }
+    // 2. Validar Email
+    if (!isUpdate || userData.email !== undefined) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!userData.email || !emailRegex.test(userData.email)) {
+        throw new Error("El formato del correo electrónico no es válido.");
       }
+    }
 
-      // 3. Validar Rol
-      if (!isUpdate || userData.role !== undefined) {
-        const validRoles = ["user", "admin"];
-        if (!userData.role || !validRoles.includes(userData.role)) {
-          throw new Error("El rol debe ser 'user' o 'admin'.");
-        }
+    // 3. Validar Rol
+    if (!isUpdate || userData.role !== undefined) {
+      const validRoles = ["user", "admin"];
+      if (!userData.role || !validRoles.includes(userData.role)) {
+        throw new Error("El rol debe ser 'user' o 'admin'.");
       }
     }
   }

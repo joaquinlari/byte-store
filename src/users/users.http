@@ -1,6 +1,6 @@
 ### Configuración de Variables
 @baseUrl = http://localhost:3000/users
-@adminSecretKey = super_secreto_utn_2026
+@adminSecretKey = Adnsu8@we
 
 ### 1. Obtener todos los usuarios
 GET {{baseUrl}}/

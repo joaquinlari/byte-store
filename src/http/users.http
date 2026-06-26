@@ -53,7 +53,7 @@ PUT {{baseUrl}}/{{UserId}}
 Content-Type: application/json
 
 {
-  "name": "Lionel Andres Messi",
+  "name": "Lionel Andres Messi"
 }
 
 ### 7. Eliminar al usuario creado

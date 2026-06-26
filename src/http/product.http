@@ -74,7 +74,7 @@ Content-Type: application/json
 
 ### Eliminar producto por id 
 ### (SIN protección - pendiente middleware JWT + rol ADMIN)
-DELETE http://localhost:3000/products/4
+DELETE http://localhost:3000/products/2
 Content-Type: application/json
 
 ### Caso de error: eliminar un id que no existe (debería devolver 404)

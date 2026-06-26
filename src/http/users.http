@@ -6,20 +6,16 @@
 GET {{baseUrl}}/
 Content-Type: application/json
 
-###
-
 ### 2. Crear un usuario común (Rol: 'user')
 # @name createUser
 POST {{baseUrl}}/
 Content-Type: application/json
 
 {
-  "name": "Juan Perez",
-  "email": "juan.perez@example.com",
-  "password": "password123"
+  "name": "Lionel Messi",
+  "email": "messi@el10.com",
+  "password": "qatar2022"
 }
-
-###
 
 ### Guardamos el ID del usuario para las siguientes pruebas 
 @UserId = 1
@@ -27,8 +23,6 @@ Content-Type: application/json
 ### 3. Obtener un usuario por ID
 GET {{baseUrl}}/{{UserId}}
 Content-Type: application/json
-
-###
 
 ### 4. Crear un Administrador (Validando la clave secreta)
 POST {{baseUrl}}/admin
@@ -42,8 +36,6 @@ Content-Type: application/json
   "secretKey": "{{adminSecretKey}}"
 }
 
-###
-
 ### 5. Intentar crear Administrador con clave incorrecta (Debe dar 403)
 POST {{baseUrl}}/admin
 Content-Type: application/json
@@ -56,24 +48,17 @@ Content-Type: application/json
   "secretKey": "clave_incorrecta_2026"
 }
 
-###
-
 ### 6. Actualizar datos del usuario creado
 PUT {{baseUrl}}/{{UserId}}
 Content-Type: application/json
 
 {
-  "name": "Juan Carlos Perez",
-  "username": "juan_carlos"
+  "name": "Lionel Andres Messi",
 }
-
-###
 
 ### 7. Eliminar al usuario creado
 DELETE {{baseUrl}}/{{UserId}}
 Content-Type: application/json
-
-###
 
 ### 8. Intentar buscar al usuario eliminado (Debe dar 404)
 GET {{baseUrl}}/{{UserId}}

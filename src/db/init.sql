@@ -1,12 +1,4 @@
--- =========================================================
--- ByteStore - Script de inicialización de Base de Datos
--- PostgreSQL
--- =========================================================
--- =========================================================
 -- TABLA: users
--- Almacena tanto a CLIENTE como ADMIN. El rol se valida
--- a nivel DB (CHECK) y luego se replica en el JWT.
--- =========================================================
 CREATE TABLE IF NOT EXISTS users (
     id              SERIAL PRIMARY KEY,
     name       VARCHAR(150) NOT NULL,
@@ -17,11 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     created_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- =========================================================
 -- TABLA: categories
--- Clasifica los productos del catálogo (ej: Celulares,
--- Accesorios, Tablets, etc).
--- =========================================================
 CREATE TABLE IF NOT EXISTS categories (
     id              SERIAL PRIMARY KEY,
     name            VARCHAR(80) NOT NULL UNIQUE,
@@ -29,12 +17,7 @@ CREATE TABLE IF NOT EXISTS categories (
     created_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- =========================================================
 -- TABLA: products
--- Catálogo general de productos. El stock se descuenta
--- ÚNICAMENTE en el momento del checkout (regla de negocio
--- crítica). category_id permite filtrar/organizar el catálogo.
--- =========================================================
 CREATE TABLE IF NOT EXISTS products (
     id              SERIAL PRIMARY KEY,
     category_id     INTEGER REFERENCES categories(id) ON DELETE SET NULL,
@@ -48,12 +31,7 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- =========================================================
 -- TABLA: cart_items
--- Carrito por usuario. Es TRANSITORIA: se vacía automática-
--- mente cuando el usuario completa una compra exitosa.
--- No descuenta stock por sí sola.
--- =========================================================
 CREATE TABLE IF NOT EXISTS cart_items (
     id              SERIAL PRIMARY KEY,
     user_id         INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -63,11 +41,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
     UNIQUE (user_id, product_id)
 );
 
--- =========================================================
 -- TABLA: orders
--- Cabecera de la orden de compra. Se genera en el momento
--- exacto del checkout, una vez validado el stock.
--- =========================================================
 CREATE TABLE IF NOT EXISTS orders (
     id              SERIAL PRIMARY KEY,
     user_id         INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
@@ -77,12 +51,7 @@ CREATE TABLE IF NOT EXISTS orders (
     created_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- =========================================================
 -- TABLA: order_items
--- Detalle inmutable de cada orden. Guarda el precio unitario
--- AL MOMENTO de la compra (no referenciamos products.price
--- directamente, porque ese precio puede cambiar después).
--- ========================================
 CREATE TABLE IF NOT EXISTS order_items (
     id              SERIAL PRIMARY KEY,
     order_id        INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
